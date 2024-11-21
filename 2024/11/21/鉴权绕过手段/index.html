@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    鉴权绕过手段 丨
+    
+
+    le0
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Le0的随便写写</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">鉴权绕过手段</div>
+  <div class="post-meta">
+    <div class="date">2024 November 21st</div>
+    <div class="tags">
+      
+      <div class="tag-item">安全技术</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>参考链接<br><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15076204/3992137">https://blog.51cto.com/u_15076204&#x2F;3992137</a><br><img src="/images/PassAuth/PassAuth1.png"><br>什么是httpservletrequest请求</p>
+<ul>
+<li>在 Servlet API 中，定义了一个 HttpServletRequest 接口，它继承自 ServletRequest 接口。</li>
+<li>HttpServletRequest 对象专门用于封装 HTTP 请求消息，简称 request 对象。</li>
+</ul>
+<p>作用</p>
+<ul>
+<li>获取请求行</li>
+<li>获取消息头</li>
+<li>获取 form 表单的数据<br><img src="/images/PassAuth/PassAuth2.png"><br>用户请求—》spring处理uri –》LookupPath –》handler</li>
+</ul>
+<h3 id="Springboot特性"><a href="#Springboot特性" class="headerlink" title="Springboot特性:"></a>Springboot特性:</h3><ul>
+<li>将&#x2F;&#x2F;转换为&#x2F;</li>
+<li>将&#x2F;;xxxxx&#x2F;转换为&#x2F;&#x2F;</li>
+<li>通过getServletPath 获取path值</li>
+<li>对请求的URI进行以此URL解码</li>
+<li>在Springboot &gt; 2.3.0.RELEASE后， alwaysUseFullPath 默认为true，不再处理 ..&#x2F; 在Springboot &lt;&#x3D; 2.3.0.RELEASE， alwaysUseFullPath 默认为false，处理 ..&#x2F;</li>
+</ul>
+<h3 id="Tomcat特性"><a href="#Tomcat特性" class="headerlink" title="Tomcat特性"></a>Tomcat特性</h3><p>几种获取URI的方法</p>
+<ul>
+<li>request.getRequestURI()</li>
+<li>request.getRequestURL()</li>
+<li>request.getContextPath()</li>
+<li>request.getServletPath()</li>
+<li>request.getPathInfo()<br><img src="/images/PassAuth/PassAuth3.png"><br>getPathInfo在配置中配置了servlet-path时，才能够获取到相应的值</li>
+</ul>
+<p>在构造 <a target="_blank" rel="noopener" href="http://127.0.0.1:9093/icsl/test/v1/;%2faaa/search1">http://127.0.0.1:9093/icsl/test/v1/aaa/../;%2faaa/search1</a> 这样的请求下， Springboot仍然能够正确路由到相应的Mapping中。那么如果在进行认证鉴权时不考虑这些特殊情况的话，会很容易被绕过。<br><img src="/images/PassAuth/PassAuth4.png"></p>
+<h3 id="Tomcat-RequestURI-全匹配uri认证场景"><a href="#Tomcat-RequestURI-全匹配uri认证场景" class="headerlink" title="Tomcat + RequestURI + 全匹配uri认证场景"></a>Tomcat + RequestURI + 全匹配uri认证场景</h3><p>思路:鉴权全匹配认证，而请求字符串不适配 “全匹配” 场景<br>利用springboot的特性还是可以请求到相关接口而由于字符串不匹配认证鉴权，则不必鉴权。<br>多斜杠 url编码 分号绕过<br>&#x2F;mp&#x2F;goods&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;create<br>&#x2F;mp&#x2F;goods&#x2F;%3dreate<br> &#x2F;mp&#x2F;goods&#x2F;;aaa&#x2F;create<br>达到请求&#x2F;mp&#x2F;goods &#x2F;create接口而不需要鉴权的效果</p>
+<h3 id="Tomcat-RequestURI-正则匹配场景"><a href="#Tomcat-RequestURI-正则匹配场景" class="headerlink" title="Tomcat + RequestURI + 正则匹配场景"></a>Tomcat + RequestURI + 正则匹配场景</h3><p>满足正则—》不需要鉴权<br><img src="/images/PassAuth/PassAuth5.png"></p>
+<h3 id="Tomcat-servletpath-全匹配认证场景"><a href="#Tomcat-servletpath-全匹配认证场景" class="headerlink" title="Tomcat + servletpath + 全匹配认证场景"></a>Tomcat + servletpath + 全匹配认证场景</h3><p>ServletPath虽然会对多个情况进行处理，但如果使用全匹配的话也存在被绕过的可能：<br><img src="/images/PassAuth/PassAuth6.png"><br>思路：末尾添加&#x2F;不满足全匹配场景，不必鉴权，又可以正常向该接口</p>
+<ul>
+<li><p>总结思路，利用spring的特性向接口发起请求，绕过鉴权场景</p>
+<ul>
+<li>&#x2F;mp&#x2F;goods&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;create    请求接口中添加多&#x2F;&#x2F;&#x2F;</li>
+<li>&#x2F;mp&#x2F;goods&#x2F;%3dcreate     请求接口中添加&#x2F;%3d</li>
+<li> &#x2F;mp&#x2F;goods&#x2F;;aaa&#x2F;create  请求接口中添加&#x2F;;xxx&#x2F; 绕过鉴权</li>
+<li>..&#x2F;..&#x2F;..&#x2F;        在不需要鉴权的路径后，添加..&#x2F;..&#x2F;</li>
+<li>Aaa&#x2F;bbb&#x2F;ccc&#x2F;     请求接口末尾添加&#x2F;  绕过鉴权</li>
+</ul>
+</li>
+</ul>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typole0</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>
