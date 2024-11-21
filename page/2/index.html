@@ -48,6 +48,29 @@
     <div class="post-list">
   
   <section class="post-item">
+    <a class="post-item-title" href="/2024/11/20/kkFileView-fileuplad-RCE/">kkFileView_fileuplad_RCE</a>
+    <div class="post-item-summary">
+      漏洞信息
+漏洞成因在v4.2.0版本的更新中，由于前台上传功能在处理压缩包时，从仅获取文件名改为获取文件名及其目录，导致出现了Zip Slip漏洞。这使得攻击者可上传包含恶意代码的压缩包并覆盖系统文件，随后通过调用这些被覆盖的文件实现远程代码执行。
+
+已知影响版本：4.2.0 &lt;&#x3D; kkFileView &lt;&#x3D; v4.4.0-beta
+
+临时解决方案
+
+建议开启 file.upload.disable&#x3D;true 参数，禁用首页的文件上传
+      <a class="read-more" href="/2024/11/20/kkFileView-fileuplad-RCE/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2024.11.20</div>
+      <div class="tags">
+        
+        <div class="tag-item">漏洞复现</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
     <a class="post-item-title" href="/2024/11/20/leo-s-First-Post/">le0&#39;s First Post</a>
     <div class="post-item-summary">
       人生有三种根本的困境。第一，人生来只能注定是自己，人生来注定是活在无数他人中间，并且无法与他人彻底沟通。这意味着孤独。第二，人生来就有欲望，人实现欲望的能力，永远赶不上他欲望的能力。这是一个永恒的距离。第三，人生来不想死，可人生来就是在走向死。这意味着恐惧。

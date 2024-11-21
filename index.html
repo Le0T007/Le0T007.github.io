@@ -48,6 +48,26 @@
     <div class="post-list">
   
   <section class="post-item">
+    <a class="post-item-title" href="/2024/11/21/%E5%8F%8D%E5%BC%B9shell/">反弹shell</a>
+    <div class="post-item-summary">
+      哑shell变交互shell具体如下，第一步，在哑 shell 中执行：python -c &#39;import pty; pty.spawn(&quot;/bin/bash&quot;)&#39;键入 Ctrl-Z，回到 VPS 的命令行中；第二步，在 VPS 中执行：stty raw -echofg
+回到哑 shell 中；第三步，在哑 shell 中键入 Ctrl-l，执行：
+$ reset
+$ export SHELL=bash
+$ export TERM=xter
+      <a class="read-more" href="/2024/11/21/%E5%8F%8D%E5%BC%B9shell/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2024.11.21</div>
+      <div class="tags">
+        
+        <div class="tag-item">安全技术</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
     <a class="post-item-title" href="/2024/11/21/linux%E6%8F%90%E6%9D%83/">linux提权</a>
     <div class="post-item-summary">
       1.查看信息内核以及操作系统信息uname -a                 打印所有可用的系统信息uname -r                  内核版本uname -n                 系统主机名。uname -m                查看系统内核架构（64位&#x2F;32位）hostname                系统主机名cat &#x2F;proc&#x2F;version    内核信息cat &#x2F;etc&#x2
@@ -262,29 +282,6 @@ shellcode奏效流程常shellcode确实需要嵌入或打包在一个可执行�
       漏洞介绍WordPress 的 Time Clock 插件和 Time Clock Pro 插件在 1.2.2 及以下版本（适用于 Time Clock）和 1.1.4 版本（适用于 Time Clock Pro）中存在通过“etimeclockwp_load_function_callback”函数执行远程代码的漏洞。这允许未经身份验证的攻击者在服务器上执行代码。无法指定调用函数的参数。
 1.2.2版本 链接： https://downloads.wordpress.org
       <a class="read-more" href="/2024/11/20/wp-timeclock-rce/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.11.20</div>
-      <div class="tags">
-        
-        <div class="tag-item">漏洞复现</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/11/20/kkFileView-fileuplad-RCE/">kkFileView_fileuplad_RCE</a>
-    <div class="post-item-summary">
-      漏洞信息
-漏洞成因在v4.2.0版本的更新中，由于前台上传功能在处理压缩包时，从仅获取文件名改为获取文件名及其目录，导致出现了Zip Slip漏洞。这使得攻击者可上传包含恶意代码的压缩包并覆盖系统文件，随后通过调用这些被覆盖的文件实现远程代码执行。
-
-已知影响版本：4.2.0 &lt;&#x3D; kkFileView &lt;&#x3D; v4.4.0-beta
-
-临时解决方案
-
-建议开启 file.upload.disable&#x3D;true 参数，禁用首页的文件上传
-      <a class="read-more" href="/2024/11/20/kkFileView-fileuplad-RCE/"> ... </a>
     </div>
     <div class="post-item-extra">
       <div class="date">2024.11.20</div>
