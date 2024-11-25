@@ -215,6 +215,46 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/11/25/xss%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" target="_self">
+          xss漏洞学习
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/25/xss%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" target="_self">
+        <div>
+          漏洞成因获取自前端的参数值，未经过滤和处理，直接反馈给前端页面。 一般通过XSS全局过滤器进行对request中的所有参数拦截处理，对用户输入的内容进行非法字符的判断。 如果还有非法字符，例如&#39; ” &lt; &gt;等编码转义处理，使其浏览器不能解析此类字符，在java中一般采用的封装了ESAPI的XSS的Filter处理.  攻击场景假如http://test.com/xss1.php
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-25 09:24" pubdate>
+              2024-11-25
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/">#安全技术</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/11/21/%E5%8F%8D%E5%BC%B9shell/" target="_self">
           反弹shell
         </a>
@@ -562,46 +602,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF/">#安全技术</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/20/wp-timeclock-rce/" target="_self">
-          wp_timeclock_rce
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/20/wp-timeclock-rce/" target="_self">
-        <div>
-          漏洞介绍WordPress 的 Time Clock 插件和 Time Clock Pro 插件在 1.2.2 及以下版本（适用于 Time Clock）和 1.1.4 版本（适用于 Time Clock Pro）中存在通过“etimeclockwp_load_function_callback”函数执行远程代码的漏洞。这允许未经身份验证的攻击者在服务器上执行代码。无法指定调用函数的参数。 1.2
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-20 20:40" pubdate>
-              2024-11-20
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">#漏洞复现</a>
             
           </div>
         
