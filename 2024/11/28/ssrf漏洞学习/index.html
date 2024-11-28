@@ -19,28 +19,26 @@
   <meta name="author" content="Leo">
   <meta name="keywords" content="">
   
-    <meta name="description" content="漏洞成因获取自前端的参数值，未经过滤和处理，直接反馈给前端页面。 一般通过XSS全局过滤器进行对request中的所有参数拦截处理，对用户输入的内容进行非法字符的判断。 如果还有非法字符，例如&#39; ” &lt; &gt;等编码转义处理，使其浏览器不能解析此类字符，在java中一般采用的封装了ESAPI的XSS的Filter处理.  攻击场景假如http:&#x2F;&#x2F;test.com&#x2F;xss1.php">
+    <meta name="description" content="漏洞原理有些web应用可以用url获取其他服务器上的资源，该功能若有安全缺陷，则可以借此web应用作为代理攻击远程和本地服务器。 黑盒发现特征 远程加载图片 远程加载资源文件，如页面  一般利用手段 请求非http服务的端口，如http:&#x2F;&#x2F;scanme.nmap.org:22&#x2F;test.txt 会返回banner信息 请求关闭的端口，如http:&#x2F;&#x2F;scanme.nmap.org:25&#x2F;tes">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xss漏洞学习">
-<meta property="og:url" content="http://example.com/2024/11/25/xss%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:title" content="ssrf漏洞学习">
+<meta property="og:url" content="http://example.com/2024/11/28/ssrf%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Le0的随便写写">
-<meta property="og:description" content="漏洞成因获取自前端的参数值，未经过滤和处理，直接反馈给前端页面。 一般通过XSS全局过滤器进行对request中的所有参数拦截处理，对用户输入的内容进行非法字符的判断。 如果还有非法字符，例如&#39; ” &lt; &gt;等编码转义处理，使其浏览器不能解析此类字符，在java中一般采用的封装了ESAPI的XSS的Filter处理.  攻击场景假如http:&#x2F;&#x2F;test.com&#x2F;xss1.php">
+<meta property="og:description" content="漏洞原理有些web应用可以用url获取其他服务器上的资源，该功能若有安全缺陷，则可以借此web应用作为代理攻击远程和本地服务器。 黑盒发现特征 远程加载图片 远程加载资源文件，如页面  一般利用手段 请求非http服务的端口，如http:&#x2F;&#x2F;scanme.nmap.org:22&#x2F;test.txt 会返回banner信息 请求关闭的端口，如http:&#x2F;&#x2F;scanme.nmap.org:25&#x2F;tes">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/xssLearn/xssLearn1.png">
-<meta property="og:image" content="http://example.com/images/xssLearn/xssLearn2.png">
-<meta property="og:image" content="http://example.com/images/xssLearn/xssLearn3.png">
-<meta property="og:image" content="http://example.com/images/xssLearn/xssLearn4.png">
-<meta property="og:image" content="http://example.com/images/xssLearn/xssLearn5.png">
-<meta property="article:published_time" content="2024-11-25T01:24:27.000Z">
-<meta property="article:modified_time" content="2024-11-25T07:24:54.168Z">
+<meta property="og:image" content="http://example.com/images/ssrfLearn/ssrf1.png">
+<meta property="og:image" content="http://example.com/images/ssrfLearn/ssrf2.png">
+<meta property="og:image" content="http://example.com/images/ssrfLearn/ssrf3.png">
+<meta property="article:published_time" content="2024-11-28T08:14:38.000Z">
+<meta property="article:modified_time" content="2024-11-28T08:22:28.571Z">
 <meta property="article:author" content="Leo">
 <meta property="article:tag" content="安全技术">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/images/xssLearn/xssLearn1.png">
+<meta name="twitter:image" content="http://example.com/images/ssrfLearn/ssrf1.png">
   
   
   
-  <title>xss漏洞学习 - Le0的随便写写</title>
+  <title>ssrf漏洞学习 - Le0的随便写写</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -194,7 +192,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="xss漏洞学习"></span>
+            <span id="subtitle" data-typed-text="ssrf漏洞学习"></span>
           
         </div>
 
@@ -205,8 +203,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-11-25 09:24" pubdate>
-          2024年11月25日 上午
+        <time datetime="2024-11-28 16:14" pubdate>
+          2024年11月28日 下午
         </time>
       </span>
     
@@ -217,7 +215,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          781 字
+          696 字
         
       </span>
     
@@ -228,7 +226,7 @@
         
         
         
-          7 分钟
+          6 分钟
         
       </span>
     
@@ -265,51 +263,58 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">xss漏洞学习</h1>
+            <h1 id="seo-header">ssrf漏洞学习</h1>
             
             
               <div class="markdown-body">
                 
-                <h4 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h4><p>获取自前端的参数值，未经过滤和处理，直接反馈给前端页面。</p>
-<p>一般通过XSS全局过滤器进行对request中的所有参数拦截处理，对用户输入的内容进行非法字符的判断。</p>
-<p>如果还有非法字符，例如<code>&#39; ” &lt; &gt;</code>等编码转义处理，使其浏览器不能解析此类字符，在java中一般采用的封装了ESAPI的XSS的Filter处理.</p>
-<p><img src="/images/xssLearn/xssLearn1.png" srcset="/img/loading.gif" lazyload></p>
-<h4 id="攻击场景"><a href="#攻击场景" class="headerlink" title="攻击场景"></a>攻击场景</h4><p>假如<a target="_blank" rel="noopener" href="http://test.com/xss1.php">http://test.com/xss1.php</a>存在XSS反射型跨站漏洞，那么攻击者的步骤可能如下。</p>
-<p>①test1是网站test.com的用户，此时正在登录的状态中。</p>
-<p>②攻击者发现<a target="_blank" rel="noopener" href="http://test.com/xss1.php">http://test.com/xss1.php</a>存在XSS反射型跨站漏洞，然后精心构造JavaScript代码，此段代码可以窃取用户的cookie。</p>
-<p>③攻击者将带有反射型XSS漏洞的URL通过站内信息发送给用户test1，使用各种诱导的方式让用户test1去打开链接。</p>
-<p>④如果用户test1打开了带有XSS漏洞的URL，那么就会把自己的cookie发送到攻击者中。</p>
-<p>⑤攻击者接受到用户test1的会话cookie，就可以直接利用cookie以test1的身份登录test.com网站中。</p>
-<p>以上步骤，通过使用反射型XSS漏洞可以以test1的身份登录网站，这就是其危害。</p>
-<h4 id="获取前端参数值的几种方法"><a href="#获取前端参数值的几种方法" class="headerlink" title="获取前端参数值的几种方法"></a>获取前端参数值的几种方法</h4><p>1、直接使用servlet技术，requests.getparameter(“参数值”)</p>
-<p><img src="/images/xssLearn/xssLearn2.png" srcset="/img/loading.gif" lazyload></p>
-<p>2、请求参数名和Controller方法的参数一致</p>
-<p><img src="/images/xssLearn/xssLearn3.png" srcset="/img/loading.gif" lazyload></p>
-<p>3、请求参数名和controller方法中的对象的参数一致</p>
-<p><img src="/images/xssLearn/xssLearn4.png" srcset="/img/loading.gif" lazyload></p>
-<p>4、自定义方法参数名（当请求参数名与方法参数名不一致）</p>
-<p><img src="/images/xssLearn/xssLearn5.png" srcset="/img/loading.gif" lazyload></p>
-<h4 id="前端输出"><a href="#前端输出" class="headerlink" title="前端输出"></a>前端输出</h4><p>1、使用安全的输出方法</p>
-<ul>
-<li>在将动态数据插入到html、css、Js中时，使用安全的输出方法，对于html内容，使用‘innerText’或者‘textContent’而非‘innerHTML’</li>
+                <p><img src="/images/ssrfLearn/ssrf1.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p>有些web应用可以用url获取其他服务器上的资源，该功能若有安全缺陷，则可以借此web应用作为代理攻击远程和本地服务器。</p>
+<h2 id="黑盒发现"><a href="#黑盒发现" class="headerlink" title="黑盒发现"></a>黑盒发现</h2><h3 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h3><ul>
+<li>远程加载图片</li>
+<li>远程加载资源文件，如页面</li>
 </ul>
-<p>2、转义特殊字符</p>
-<ul>
-<li>在插入动态数据之前，确保对特殊字符进行转义。这包括 &lt; &gt; &amp; ‘ “ 等。在前端可以使用Handlebars、React的JSX、Vue的Mustache 等模板引擎，他们回自动进行字符转义。</li>
+<h3 id="一般利用手段"><a href="#一般利用手段" class="headerlink" title="一般利用手段"></a>一般利用手段</h3><ul>
+<li>请求非http服务的端口，如<a target="_blank" rel="noopener" href="http://scanme.nmap.org:22/test.txt">http://scanme.nmap.org:22/test.txt</a> 会返回banner信息</li>
+<li>请求关闭的端口，如<a target="_blank" rel="noopener" href="http://scanme.nmap.org:25/test.txt">http://scanme.nmap.org:25/test.txt</a> 会报错</li>
+<li>请求本机端口 如<a target="_blank" rel="noopener" href="http://127.0.0.1:3306/test.txt%EF%BC%8C%E4%BC%9A%E8%BF%94%E5%9B%9E%E9%9C%80%E8%A6%81%E5%AF%86%E7%A0%81%E7%AD%89%E7%89%B9%E5%BE%81">http://127.0.0.1:3306/test.txt，会返回需要密码等特征</a></li>
+<li>请求内网或者本地应用，<a target="_blank" rel="noopener" href="http://127.0.0.1:8987/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">http://127.0.0.1:8987/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</a> AAAAA让他溢出崩溃</li>
+<li>对内网应用识别指纹，比如访问默认文件路径，进行fuzz 如 <a target="_blank" rel="noopener" href="http://10.0.0.1/portName.js">http://10.0.0.1/portName.js</a> 可以根据返回结果判断是否是Dlink 路由器</li>
+<li>攻击内外网的web应用，主要是使用get参数就可以实现的攻击（比如struts2， sqli等），木马放公网服务器上让目标去取</li>
 </ul>
-<p><em><strong>Ant Design</strong></em> <em>是一套基于React的企业级UI设计语言和React组件库。</em></p>
-<ul>
-<li>_JSX：_使用花括号 <strong>{}</strong> 包裹的动态内容最终会被正确地渲染为对应的 HTML 元素。这意味着如果动态内容包含 HTML 标签，这些标签会被解释为真正的 HTML 元素。</li>
+<h3 id="导致的风险"><a href="#导致的风险" class="headerlink" title="导致的风险"></a>导致的风险</h3><ul>
+<li>会导致内网信息泄露，如端口、内部IP信息泄露等</li>
+<li>作为跳板，攻击内网</li>
+<li>利用特殊协议如file、golpher等进行高级利用</li>
 </ul>
-<p>在 React 中，如果你尝试渲染包含 <code>&lt;script&gt;</code>标签的内容，React 会默认对其中的内容进行转义，防止直接执行脚本。</p>
-<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">const scriptContent = &quot;<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-regexp">/xss/</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>&quot;;</span><br><span class="language-xml">const element = <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><span class="hljs-template-variable">&#123;scriptContent&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>;</span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-regexp">/xss/</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
-
-<ul>
-<li>Mustache 模板引擎默认会对变量进行 HTML 转义，以防止 XSS 攻击。这意味着插入到模板中的变量内容会被转义，将特殊字符（如 <strong>&lt;**, **&gt;</strong>, **&amp;**）转换为对应的 HTML 实体。</li>
+<h2 id="白盒检查"><a href="#白盒检查" class="headerlink" title="白盒检查"></a>白盒检查</h2><h3 id="特征-1"><a href="#特征-1" class="headerlink" title="特征"></a>特征</h3><ul>
+<li>寻找以url为参数的的方法<ul>
+<li>常见的如使用Apache的HttpClient组件： 如下代码中使用了httpclient组件，且请求的url来自用户输入，则该处存在SSRF漏洞。<br><img src="/images/ssrfLearn/ssrf2.png" srcset="/img/loading.gif" lazyload></li>
+<li>使用Java原生的HttpUrlConnection用来发送Http请求，如下图，请求的url来自用 户输入，则该处存在SSRF漏洞<br><img src="/images/ssrfLearn/ssrf3.png" srcset="/img/loading.gif" lazyload></li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml">如果 content 包含 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;XSS&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>，<br>Mustache 会将其转义为:<br></code></pre></td></tr></table></figure>
-
-<p><code>&amp;lt;script&amp;gt;alert(&#39;XSS&#39;)&amp;lt;/script&amp;gt;</code></p>
+</li>
+</ul>
+<h3 id="in-java"><a href="#in-java" class="headerlink" title="in java"></a>in java</h3><p>java中可以发 出网络请求的类如下：</p>
+<ul>
+<li>HttpClient</li>
+<li>Request（该类是对HttpClient的封装）</li>
+<li>HttpURLConnection</li>
+<li>URL</li>
+<li>Okhttp<br>SSRF 在java中的利用相对受限：</li>
+<li>利用file协议读文件</li>
+<li>利用http&#x2F;https协议探测端口，或向内网其他web应用发起攻击</li>
+</ul>
+<h2 id="绕过利用的tips"><a href="#绕过利用的tips" class="headerlink" title="绕过利用的tips"></a>绕过利用的tips</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.baidu.com@10.10.10.10/">http://www.baidu.com@10.10.10.10</a> 与 <a target="_blank" rel="noopener" href="http://10.10.10.10/">http://10.10.10.10</a> 请求是相同的</li>
+<li>绕过正则匹配IP，将ip使用进制编码，8，16 ，10 ，16等</li>
+<li>10.0.0.1这个IP可以写成10.1</li>
+<li>一个可以指向任意ip的域名：xip.io，多用于SSRF。xip.io(<a target="_blank" rel="noopener" href="http://xip.io/)%E7%9A%84%E5%8E%9F%E7%90%86%E5%BE%88%E7%AE%80%E5%8D%95%EF%BC%8C">http://xip.io/)的原理很简单，</a> 即dns解析服务，可以利用xip.io进行域名任意绑定。用法如下： 10.0.0.1.xip.io指向的域名：10.0.0.1 <a href="http://www.10.0.0.1.xip.io指向的域名：10.0.0.1">www.10.0.0.1.xip.io指向的域名：10.0.0.1</a> mysite.10.0.0.1.xip.io指向的域名：10.0.0.1 foo.bar.10.0.0.1.xip.io指向的域名：10.0.0.1</li>
+<li>某些 URL 解析器将[]内的任何字符串视为 IPv6 主机，而无需进行其他验证。<ul>
+<li><a target="_blank" rel="noopener" href="https://evil.com/[.xxx.com]">https://evil.com\[.xxx.com]</a> –&gt;<a target="_blank" rel="noopener" href="https://evil.com/">https://evil.com/</a></li>
+</ul>
+</li>
+<li>申请短域名指向内网地址: <a target="_blank" rel="noopener" href="http://192.168.31.1/">http://192.168.31.1</a> -&gt; <a target="_blank" rel="noopener" href="http://suo.im/1QLXa2">http://suo.im/1QLXa2</a> 访问 <a target="_blank" rel="noopener" href="http://suo.im/1QLXa2">http://suo.im/1QLXa2</a> 实际上就是请求 <a target="_blank" rel="noopener" href="http://192.168.31.1/">http://192.168.31.1。</a></li>
+</ul>
 
                 
               </div>
@@ -334,8 +339,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>xss漏洞学习</div>
-      <div>http://example.com/2024/11/25/xss漏洞学习/</div>
+      <div>ssrf漏洞学习</div>
+      <div>http://example.com/2024/11/28/ssrf漏洞学习/</div>
     </div>
     <div class="license-meta">
       
@@ -347,7 +352,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年11月25日</div>
+          <div>2024年11月28日</div>
         </div>
       
       
@@ -379,18 +384,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/11/28/ssrf%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="ssrf漏洞学习">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ssrf漏洞学习</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/11/21/%E5%8F%8D%E5%BC%B9shell/" title="反弹shell">
-                        <span class="hidden-mobile">反弹shell</span>
+                      <a href="/2024/11/25/xss%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="xss漏洞学习">
+                        <span class="hidden-mobile">xss漏洞学习</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
